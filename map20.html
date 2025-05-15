@@ -1455,77 +1455,90 @@
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
-<script>
-  // 1) list of all state IDs (plus DC)
-  const idList = [
-    'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
-    'HI','IA','ID','IL','IN','KS','KY','LA','MA','MD',
-    'ME','MI','MN','MO','MS','MT','NC','ND','NE','NH',
-    'NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC',
-    'SD','TN','TX','UT','VA','VT','WA','WI','WV','WY','DC'
-  ];
-
-  // 2) build a single selector string
-  const stateSelector = idList.map(id => `path#${id}`).concat('circle').join(', ');
-
-  // 3) helper to show the popup
-  function showInfo(el, href) {
-    $('#info-box')
-      .html($(el).data('info'))
-      .attr('data-href', href)
-      .show();
-    document.documentElement.classList.add('mobile-popup-opened');
-  }
-
-  $(function(){
-    // prevent links inside SVG from navigating on mobile
-    $('.wees-map__code a').on('click touchend', e => e.preventDefault());
-
-    if ($(window).width() < 768) {
-      // — MOBILE MODE —
-
-      // tap on any of our states/circles
-      $(stateSelector).on('click touchend', function(e){
-        const id = this.id;
-        if (!idList.includes(id)) return;
-        const href = $(this).closest('a').attr('href');
-        showInfo(this, href);
-
-        // links inside the popup open the parent href
-        $('#info-box a').on('click touchend', ev => {
-          ev.preventDefault();
-          window.open($('#info-box').data('href'), '_blank');
+    <script>
+      if ($(window).width() < 768) {
+        $('.wees-map__code a').on('click touchend', (e)=> {
+          e.preventDefault();
         });
-      });
+    
+        $('.wees-map__code path').on('click touchend', function(e) {
+          const href = $(this).closest('a').attr('href');
+          const idList = [
+      'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+      'HI','IA','ID','IL','IN','KS','KY','LA','MA','MD',
+      'ME','MI','MN','MO','MS','MT','NC','ND','NE','NH',
+      'NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC',
+      'SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'
+    ];
+    const stateSelector = idList.map(id => `path#${id}`).concat('circle').join(', ');
+    
+          if (idList.indexOf(e.currentTarget.id) < 0) {
+            return;
+          }
+    
+          const {x, y} = e.currentTarget.getBoundingClientRect();
+          $('#info-box').html($(this).data('info'));
+    
+          $('#info-box').css('display', 'block');
+          $('#info-box').attr('data-href', href)
+          document.documentElement.classList.add('mobile-popup-opened')
+    
+          $('#info-box a').on('click touchend', (e)=> {
+            e.preventDefault();
+            if (e.target.closest('#info-box')) {
+              const target = e.target.closest('#info-box')
+              const parentLink = target.dataset.href;
+              window.open(
+                parentLink,
+                '_blank' // <- This is what makes it open in a new window.
+              );
+            }
+          });
+        });
+    
+    
+        $(document).on('click', (e) => {
+          if (!e.target.closest('#info-box')) {
+            $('#info-box').css('display','none');
+            document.documentElement.classList.remove('mobile-popup-opened')
+          }
+        })
+        
+        $("path#TX, path#WA, path#MN, path#AZ, path#FL, path#ID, path#IL, path#IA, path#MO, path#MT, path#OR, path#CO, path#UT, path#NM, path#NE, path#OK, path#WI, path#MI, path#IN, path#TN, path#AL, path#MS, path#GA, path#OH, circle").mouseleave(function(e) {
+          $('#info-box').css('display','none');
+        });
+      } else {
+        $("path#TX, path#WA, path#MN, path#AZ, path#FL, path#ID, path#IL, path#IA, path#MO, path#MT, path#OR, path#CO, path#UT, path#NM, path#NE, path#OK, path#WI, path#MI, path#IN, path#TN, path#AL, path#MS, path#GA, path#OH, circle").click(function(e) {
+          $('#info-box').css('display','block');
+          $('#info-box').html($(this).data('info'));
+        });
 
-      // tapping outside hides it
-      $(document).on('click', e => {
-        if (!e.target.closest('#info-box')) {
-          $('#info-box').hide();
-          document.documentElement.classList.remove('mobile-popup-opened');
-        }
-      });
 
-      // dragging finger off a state hides it
-      $(stateSelector).on('mouseleave', () => {
-        $('#info-box').hide();
-      });
-
-    } else {
-      // — DESKTOP MODE —
-
-      // click to show
-      $(stateSelector).on('click', function(){
-        $('#info-box').show().html($(this).data('info'));
-      });
-
-      // click anywhere else hides
-      $(document).on('click', e => {
-        if (!$(e.target).closest(stateSelector + ', #info-box').length) {
-          $('#info-box').hide();
-        }
-      });
-    }
-  });
-</script>
+    
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('path').length) {
+                    $('#info-box').css('display','none');
+                }
+            });
+    
+        // $("path#TX, path#WA, path#MN, path#AZ, path#FL, path#ID, path#IL, path#IA, path#MO, path#MT, path#OR, path#OH, circle").mouseleave(function(e) {
+        //   $('#info-box').css('display','none');
+        // });
+    
+        // $(document).mousemove(function(e) {
+        //   $('#info-box').css('top',e.pageY-$('#info-box').height()-50);
+        //   $('#info-box').css('left',e.pageX-($('#info-box').width())/2);
+        // }).mouseover();
+      }
+        // document.getElementById('arizonaSVG').addEventListener('load', function() {
+        // 	var svgDoc = this.contentDocument;
+            
+        // 	var azPath = svgDoc.getElementById("AZ");
+    
+        // 	azPath.addEventListener('click', function(e) {
+        // 		console.log("Arizona path clicked!");
+        // 	});
+        // });
+      
+    </script>
 
