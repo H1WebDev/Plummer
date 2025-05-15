@@ -1440,7 +1440,14 @@
 
     $('.wees-map__code path').on('click touchend', function(e) {
       const href = $(this).closest('a').attr('href');
-      const idList = ['WA', 'TX', 'MN', 'AZ', 'FL', 'ID', 'IL', 'IA', 'MO', 'MT', 'OR', 'CO', 'UT', 'NM', 'NE', 'OK', 'WI', 'MI', 'IN', 'TN', 'AL', 'MS', 'GA', 'OH'];
+      const idList = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+  'HI','IA','ID','IL','IN','KS','KY','LA','MA','MD',
+  'ME','MI','MN','MO','MS','MT','NC','ND','NE','NH',
+  'NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC',
+  'SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'
+];
+
       if (idList.indexOf(e.currentTarget.id) < 0) {
         return;
       }
