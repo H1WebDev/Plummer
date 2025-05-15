@@ -1447,6 +1447,7 @@
   'NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC',
   'SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'
 ];
+const stateSelector = idList.map(id => `path#${id}`).concat('circle').join(', ');
 
       if (idList.indexOf(e.currentTarget.id) < 0) {
         return;
@@ -1471,7 +1472,8 @@
         }
       });
     });
-    
+
+	  /*
     $(document).on('click', (e) => {
       if (!e.target.closest('#info-box')) {
         $('#info-box').css('display','none');
@@ -1487,6 +1489,26 @@
       $('#info-box').css('display','block');
       $('#info-box').html($(this).data('info'));
     });
+	  */
+	  $(document).on('click', (e) => {
+  // if you click *outside* the popup, hide it
+  if (!e.target.closest('#info-box')) {
+    $('#info-box').hide();
+    document.documentElement.classList.remove('mobile-popup-opened');
+  }
+});
+
+$(stateSelector).mouseleave(function() {
+  // on mouse-leave (mobile)
+  $('#info-box').hide();
+});
+
+} else {
+  // on click (desktop)
+  $(stateSelector).click(function(e) {
+    $('#info-box').show().html($(this).data('info'));
+  });
+}
 
 		$(document).on('click', function(e) {
 			if (!$(e.target).closest('path').length) {
