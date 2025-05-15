@@ -1518,20 +1518,23 @@
         
         
             $(document).on('click', (e) => {
-              if (!e.target.closest('#info-box')) {
-                $('#info-box').css('display','none');
-                document.documentElement.classList.remove('mobile-popup-opened')
-              }
-            })
-            
-            $("path#TX, path#WA, path#MN, path#AZ, path#FL, path#ID, path#IL, path#IA, path#MO, path#MT, path#OR, path#CO, path#UT, path#NM, path#NE, path#OK, path#WI, path#MI, path#IN, path#TN, path#AL, path#MS, path#GA, path#OH, circle").mouseleave(function(e) {
-              $('#info-box').css('display','none');
-            });
-          } else {
-            $("path#TX, path#WA, path#MN, path#AZ, path#FL, path#ID, path#IL, path#IA, path#MO, path#MT, path#OR, path#CO, path#UT, path#NM, path#NE, path#OK, path#WI, path#MI, path#IN, path#TN, path#AL, path#MS, path#GA, path#OH, circle").click(function(e) {
-              $('#info-box').css('display','block');
-              $('#info-box').html($(this).data('info'));
-            });
+  if (!e.target.closest('#info-box')) {
+    $('#info-box').css('display','none');
+    document.documentElement.classList.remove('mobile-popup-opened');
+  }
+});
+
+$("path#AL, path#AK, path#AZ, path#AR, path#CA, path#CO, path#CT, path#DE, path#FL, path#GA, path#HI, path#IA, path#ID, path#IL, path#IN, path#KS, path#KY, path#LA, path#MA, path#MD, path#ME, path#MI, path#MN, path#MO, path#MS, path#MT, path#NC, path#ND, path#NE, path#NH, path#NJ, path#NM, path#NV, path#NY, path#OH, path#OK, path#OR, path#PA, path#RI, path#SC, path#SD, path#TN, path#TX, path#UT, path#VA, path#VT, path#WA, path#WI, path#WV, path#WY, circle")
+  .mouseleave(function(e) {
+    $('#info-box').hide();
+  });
+} else {
+  $("path#AL, path#AK, path#AZ, path#AR, path#CA, path#CO, path#CT, path#DE, path#FL, path#GA, path#HI, path#IA, path#ID, path#IL, path#IN, path#KS, path#KY, path#LA, path#MA, path#MD, path#ME, path#MI, path#MN, path#MO, path#MS, path#MT, path#NC, path#ND, path#NE, path#NH, path#NJ, path#NM, path#NV, path#NY, path#OH, path#OK, path#OR, path#PA, path#RI, path#SC, path#SD, path#TN, path#TX, path#UT, path#VA, path#VT, path#WA, path#WI, path#WV, path#WY, circle")
+    .click(function(e) {
+      $('#info-box').show().html($(this).data('info'));
+    });
+}
+
     
     
         
